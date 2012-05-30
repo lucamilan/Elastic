@@ -4,13 +4,15 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace Elastic.Core.Registry
 {
     #region
 
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+    
 
     #endregion
 

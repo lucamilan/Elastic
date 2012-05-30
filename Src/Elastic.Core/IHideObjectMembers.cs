@@ -4,13 +4,15 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+
 namespace Elastic.Core
 {
     #region
 
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
+    
 
     #endregion
 

@@ -14,7 +14,7 @@ namespace Elastic.Core.Registry
     /// <summary>
     /// </summary>
     /// <typeparam name = "T"></typeparam>
-    public interface IInstaller<T> : IHaveAnOpinion<T> where T : class
+    public interface IInstaller<in T> : IHaveAnOpinion where T : class
     {
         /// <summary>
         ///   Installs the specified registry.

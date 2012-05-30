@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Elastic</id>
+    <version>1.0.3.0</version>
+    <title>Elastic</title>
+    <authors>Luca Milan</authors>
+    <owners>Luca Milan</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/lucamilan/Elastic</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Elastic is a framework that helps to simplify the "wiring" phase of our applications.</description>
+    <summary>Elastic is a framework that helps to simplify the "wiring" phase of our applications.</summary>
+    <releaseNotes />
+    <tags>bootstrapper composition mef</tags>
+  </metadata>
+</package>

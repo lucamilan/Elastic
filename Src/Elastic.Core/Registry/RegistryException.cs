@@ -4,11 +4,11 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+using System.Runtime.Serialization;
+
 namespace Elastic.Core.Registry
 {
-    using System;
-    using System.Runtime.Serialization;
-
     /// <summary>
     /// 
     /// </summary>

@@ -4,18 +4,26 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+
 namespace Elastic.Core
 {
     #region
 
-    using System;
+    
 
     #endregion
 
     /// <summary>
+    /// Represent a Disposable implemtation base class.
     /// </summary>
     public abstract class Disposable : IDisposable
     {
+        /// <summary>
+        /// Null Disposable object
+        /// </summary>
+        public static readonly IDisposable Null = new NullDisposable();
+
         /// <summary>
         /// </summary>
         protected bool IsDisposed { get; private set; }
@@ -60,5 +68,26 @@ namespace Elastic.Core
         protected virtual void DisposeCore()
         {
         }
+
+        #region Nested type: NullDisposable
+
+        /// <summary>
+        /// </summary>
+        private sealed class NullDisposable : IDisposable
+        {
+            #region Implementation of IDisposable
+
+            /// <summary>
+            ///   Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            /// <filterpriority>2</filterpriority>
+            void IDisposable.Dispose()
+            {
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

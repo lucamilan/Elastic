@@ -4,34 +4,37 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+
 namespace Elastic.Core.Logging
 {
     /// <summary>
     /// </summary>
-    public enum MessageLevel
+    [Flags]
+    public enum MessageLevel : byte
     {
         /// <summary>
         /// </summary>
-        Info,
+        Trace = 0,
 
         /// <summary>
         /// </summary>
-        Warn,
+        Debug = 2,
 
         /// <summary>
         /// </summary>
-        Debug,
+        Info = 4,
 
         /// <summary>
         /// </summary>
-        Error,
+        Warn = 8,
 
         /// <summary>
         /// </summary>
-        Trace,
+        Error = 16,
 
         /// <summary>
         /// </summary>
-        Fatal
+        Fatal = 24
     }
 }

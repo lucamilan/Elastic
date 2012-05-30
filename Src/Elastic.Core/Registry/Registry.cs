@@ -4,17 +4,20 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using Elastic.Core.Logging;
+
 namespace Elastic.Core.Registry
 {
     #region
 
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Threading;
-    using Extensions;
+    
 
     #endregion
 
@@ -72,7 +75,7 @@ namespace Elastic.Core.Registry
         /// <returns></returns>
         IRegistry<T> IRegistry<T>.Register(params Action<T>[] actions)
         {
-            var actionList = new ActionList<T>(actions) + ActionsContainer();
+            ActionList<T> actionList = new ActionList<T>(actions) + ActionsContainer();
 
             ActionsContainer = () => actionList;
 
@@ -87,9 +90,9 @@ namespace Elastic.Core.Registry
         /// <returns></returns>
         private void ComposeInstallers()
         {
-            using (MeasureIt.Start(null))
+            using (PerformaceMeasurer("ComposeInstallers"))
             {
-                Extensibility.Composer().SatisfyImportsOnce(this);
+                Bootstrap.CompositionServiceActivator().SatisfyImportsOnce(this);
 
                 foreach (var installer in Installers.Where(_ => _.Value.CanHaveAnOpinion())
                     .OrderBy(_ => _.Metadata.Order))
@@ -105,7 +108,7 @@ namespace Elastic.Core.Registry
         /// <returns></returns>
         internal void Run()
         {
-            using (MeasureIt.Start(null))
+            using (PerformaceMeasurer("Run"))
             {
                 EnsureNotDisposed();
 
@@ -117,20 +120,20 @@ namespace Elastic.Core.Registry
 
                         ComposeInstallers();
 
-                        var actions = ActionsContainer().Reverse().ToArray();
+                        Action<T>[] actions = ActionsContainer().Reverse().ToArray();
 
                         if (actions.Length == 0)
                         {
                             return;
                         }
 
-                        var subject = result.Value;
+                        T subject = result.Value;
 
                         foreach (var action in actions)
                         {
-                            var declaringType = action.Method.DeclaringType;
+                            Type declaringType = action.Method.DeclaringType;
 
-                            var isInstaller = typeof (IInstaller<T>).IsAssignableFrom(declaringType);
+                            bool isInstaller = typeof (IInstaller<T>).IsAssignableFrom(declaringType);
 
                             var arg = new InstallerEventArg(declaringType);
 
@@ -141,7 +144,7 @@ namespace Elastic.Core.Registry
 
                             try
                             {
-                                var watch = Stopwatch.StartNew();
+                                Stopwatch watch = Stopwatch.StartNew();
                                 action(subject);
                                 watch.Stop();
                                 arg.InstallDuration = TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
@@ -177,10 +180,24 @@ namespace Elastic.Core.Registry
         /// <returns></returns>
         public static Registry<T> CreateFor(Func<T> factoryFunc)
         {
-            using (MeasureIt.Start(typeof (T).FullName))
+            using (PerformaceMeasurer("CreateFor"))
             {
                 return new Registry<T>(factoryFunc);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        private static IDisposable PerformaceMeasurer(string message)
+        {
+            ILogger logger = LogService.Current(typeof (T));
+
+            return
+                logger.Perf(string.Format(CultureInfo.InvariantCulture, "Registry<{0}> => {1}", typeof (T).FullName,
+                                          message));
         }
 
         /// <summary>
@@ -210,7 +227,8 @@ namespace Elastic.Core.Registry
         {
             if (!result.IsValueCreated)
             {
-                throw new RegistryException(string.Format("Value of type {0} is not created. Cause: missing installers.", PrettyName()));
+                throw new RegistryException(string.Format(
+                    "Value of type {0} is not created. Cause: missing installers.", PrettyName()));
             }
         }
 

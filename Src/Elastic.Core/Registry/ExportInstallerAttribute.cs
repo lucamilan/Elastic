@@ -4,12 +4,14 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+using System.ComponentModel.Composition;
+
 namespace Elastic.Core.Registry
 {
     #region
 
-    using System;
-    using System.ComponentModel.Composition;
+    
 
     #endregion
 

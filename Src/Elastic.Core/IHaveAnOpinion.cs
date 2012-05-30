@@ -16,15 +16,4 @@ namespace Elastic.Core
         /// <returns></returns>
         bool CanHaveAnOpinion();
     }
-
-    /// <summary>
-    ///   Define a typed opinionated interface.
-    /// </summary>
-    public interface IHaveAnOpinion<T> where T : class
-    {
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        bool CanHaveAnOpinion();
-    }
 }

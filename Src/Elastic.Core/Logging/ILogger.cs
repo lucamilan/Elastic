@@ -4,11 +4,13 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+
 namespace Elastic.Core.Logging
 {
     #region
 
-    using System;
+    
 
     #endregion
 
@@ -24,9 +26,17 @@ namespace Elastic.Core.Logging
         void Log(MessageLevel level, string message, params object[] args);
 
         /// <summary>
+        /// 
         /// </summary>
-        /// <param name = "level"></param>
-        /// <param name = "exception"></param>
-        void Log(MessageLevel level, Exception exception);
+        /// <param name="level"></param>
+        /// <returns></returns>
+        bool IsEnabled(MessageLevel level);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IDisposable Perf(string name);
     }
 }

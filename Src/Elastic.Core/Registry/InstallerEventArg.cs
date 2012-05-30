@@ -4,11 +4,13 @@
 // // </copyright>
 // //-----------------------------------------------------------------------
 
+using System;
+
 namespace Elastic.Core.Registry
 {
     #region
 
-    using System;
+    
 
     #endregion
 
